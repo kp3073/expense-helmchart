@@ -14,7 +14,7 @@ pipeline {
         stage('Deployment'){
             steps{
                 dir('APP'){
-                git branch: 'main', url: 'https://github.com/kp3073/${APP_NAME}'
+                git branch: 'main', url: 'https://github.com/kp3073/frontend'
                 }
                 dir('HELM'){
                 git branch: 'main', url: 'https://github.com/kp3073/expense-helmchart'
