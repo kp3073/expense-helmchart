@@ -1,34 +1,38 @@
 pipeline {
-    agent any
 
-    options{
-        ansiColor('xterm')
+  agent any
+
+  options {
+    ansiColor('xterm')
+  }
+
+  parameters {
+    choice(name: 'ENV', choices: ['dev', 'prod'], description: 'Choose Environment')
+    choice(name: 'APP_NAME', choices: ['backend', 'frontend'], description: 'Choose AppName')
+    string(name: 'VERSION', defaultValue: '', description: 'Version to Deploy')
+  }
+
+  stages {
+
+    stage('Deployment') {
+      steps {
+         dir('APP') {
+           git branch: 'main', url: "https://github.com/kp3073/${APP_NAME}"
+         }
+        dir('HELM') {
+          git branch: 'main', url: "https://github.com/kp3073/expense-helmchart"
+          sh 'helm upgrade -i ${APP_NAME} . -f ${WORKSPACE}/APP/helm/${ENV}.yaml --set appVersion=${VERSION}'
+        }
+
+      }
     }
 
-    parameters{
-        choice(name: 'ENV', choices: ['dev', 'prod'], description: 'Pick environment')
-        choice(name: 'APP_NAME', choices: ['frontend', 'backend'], description: 'Choose APPLICATION')
-        string(name: 'app_version', defaultValue: '', description: 'choose version to deploy')
+  }
+
+  post {
+    always {
+      cleanWs()
     }
-    stages{
-        stage('Deployment'){
-            steps{
-                dir('APP'){
-                git branch: 'main', url: 'https://github.com/kp3073/frontend'
-                }
-                dir('HELM'){
-                git branch: 'main', url: 'https://github.com/kp3073/expense-helmchart'
-                sh 'helm upgrade -i ${APP_NAME} . -f ${WORKSPACE}/APP/helm/${ENV}.yaml --set appVersion=${version}'
-                
-                }            
-            }
-        }
-    }
-    post{
-        always{
-        cleanWs()
-        }
-    }
+  }
+
 }
-
-
