@@ -1,5 +1,5 @@
 apiVersion: v2
 name: expense-chart
-description: A Helm chart for Expese Project
+description: A Helm chart for Expense Project
 type: application
 version: 1.0.1
