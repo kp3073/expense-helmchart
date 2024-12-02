@@ -17,7 +17,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/kp3073/${APP_NAME}'
                 }
                 dir('HELM'){
-                sh 'env'
                 git branch: 'main', url: 'https://github.com/kp3073/expense-helmchart'
                 sh 'helm upgrade -i ${APP_NAME} . -f ${WORKSPACE}/APP/helm/${ENV}.yaml --set appVersion=${version}'
                 
