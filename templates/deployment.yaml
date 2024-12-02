@@ -15,7 +15,7 @@ spec:
         app: {{.Values.appName}}
     spec:
       serviceAccountName: {{.Values.appName}}
-      {{- if .Values.initContainers.enabled}}
+        {{- if .Values.initContainers.enabled}}
       volumes:
       - name: config
         emptyDir:
