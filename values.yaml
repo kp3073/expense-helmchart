@@ -4,3 +4,6 @@ job:
   enabled: false
 
 replicas: 2
+
+ingress:
+  enabled: false
